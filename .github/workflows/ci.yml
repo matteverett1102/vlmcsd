@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.17'  # 根据需要选择 Go 的版本
+
+      - name: Build vlmcsd
+        run: go build -o vlmcsd ./cmd/vlmcsd
+
+      - name: Run tests
+        run: go test ./...  # 运行所有测试
