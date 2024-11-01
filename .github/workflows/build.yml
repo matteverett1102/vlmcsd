@@ -1,0 +1,34 @@
+name: Build Vlmcsd
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.17'  # 选择合适的 Go 版本
+
+      - name: Install dependencies
+        run: |
+          go mod tidy
+      
+      - name: Build
+        run: |
+          go build -o vlmcsd ./cmd/vlmcsd  # 调整路径以匹配项目结构
+
+      - name: Run tests
+        run: |
+          go test ./...  # 运行所有测试
